@@ -4,8 +4,6 @@ namespace Fractals.Algorithms
 {
     public class Mandelbrot1 : Fractal
     {
-        private readonly Complex Z0;
-
         public Mandelbrot1()
         {
             MinX = -2.2;

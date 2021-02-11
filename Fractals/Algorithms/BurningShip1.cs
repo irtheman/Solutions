@@ -9,8 +9,6 @@ namespace Fractals.Algorithms
 {
     public class BurningShip1 : Fractal
     {
-        private readonly Complex Z0;
-
         public BurningShip1()
         {
             MinX = -2.5;

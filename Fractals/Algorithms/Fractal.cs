@@ -18,13 +18,17 @@ namespace Fractals.Algorithms
         public double MinY { get; protected set; }
         public double MaxY { get; protected set; }
         public int MaxIterations { get; set; }
+        public Complex Z0 { get; set; }
 
-        public int Calculate(double real, double imaginary)
+        public int Calculate(double real, double imaginary, out Complex Z)
         {
             Complex z = GenerateZ(real, imaginary);
             Complex c = GenerateC(real, imaginary);
 
-            return Calculate(ref z, ref c);
+            int iteration = Calculate(ref z, ref c);
+            Z = z;
+
+            return iteration;
         }
 
         protected virtual Complex GenerateZ(double real, double imaginary)

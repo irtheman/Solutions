@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace Fractals
 {
     partial class Form1
@@ -32,6 +34,7 @@ namespace Fractals
             this.mnuStrip = new System.Windows.Forms.MenuStrip();
             this.mnuFile = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSaveAs = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuView = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSep = new System.Windows.Forms.ToolStripSeparator();
             this.mnuScale1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -166,9 +169,18 @@ namespace Fractals
             // 
             // mnuOptions
             // 
+            this.mnuOptions.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuSettings});
             this.mnuOptions.Name = "mnuOptions";
             this.mnuOptions.Size = new System.Drawing.Size(61, 23);
             this.mnuOptions.Text = "&Options";
+            // 
+            // mnuSettings
+            // 
+            this.mnuSettings.Name = "mnuSettings";
+            this.mnuSettings.Size = new System.Drawing.Size(123, 22);
+            this.mnuSettings.Text = "&Settings";
+            this.mnuSettings.Click += new System.EventHandler(this.mnuSettings_Click);
             // 
             // mnuFractal
             // 
@@ -229,6 +241,7 @@ namespace Fractals
         private System.Windows.Forms.ToolStripMenuItem mnuView;
         private System.Windows.Forms.ToolStripMenuItem mnuOptions;
         private System.Windows.Forms.ToolStripMenuItem mnuSaveAs;
+        private System.Windows.Forms.ToolStripMenuItem mnuSettings;
         private System.Windows.Forms.ToolStripMenuItem mnuScale1;
         private System.Windows.Forms.ToolStripMenuItem mnuScale2;
         private System.Windows.Forms.ToolStripMenuItem mnuScale3;

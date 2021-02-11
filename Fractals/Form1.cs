@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Numerics;
 using System.Windows.Forms;
 using Fractals.Algorithms;
 
@@ -12,14 +13,15 @@ namespace Fractals
         private Fractal _fractal;
         private Bitmap _bm;
         private Stack<double> _xMin, _xMax, _yMin, _yMax;
-        private bool _drawingBox;
+        private Complex _z0;
+        private int _maxIterations;
         private int _startX, _startY, _endX, _endY;
-
+        private bool _drawingBox;
 
         public Form1()
         {
             InitializeComponent();
-            
+
             _xMin = new Stack<double>();
             _xMax = new Stack<double>();
             _yMin = new Stack<double>();
@@ -31,11 +33,32 @@ namespace Fractals
 
             _fractal = new Mandelbrot1();
             _fractal.MaxIterations = MaxIterations;
+            _z0 = _fractal.Z0;
 
             mnuFullScale_Click(null, null);
         }
 
-        public int MaxIterations { get; set; }
+        public int MaxIterations
+        {
+            get => _maxIterations;
+            
+            set
+            {
+                _maxIterations = value;
+                _fractal.MaxIterations = value;
+            }
+        }
+
+        public Complex Z0
+        {
+            get => _z0;
+
+            set
+            {
+                _z0 = value;
+                _fractal.Z0 = value;
+            }
+        }
 
         private void DrawFractal()
         {
@@ -48,18 +71,18 @@ namespace Fractals
             Application.DoEvents();
 
             double hgt, wid, mid;
-            double want_aspect = (_yMax.Peek() - _yMin.Peek()) / (_xMax.Peek() - _xMin.Peek());
-            double Canvas_aspect = Canvas.ClientSize.Height / (double)Canvas.ClientSize.Width;
-            if (want_aspect > Canvas_aspect)
+            double wantAspect = (_yMax.Peek() - _yMin.Peek()) / (_xMax.Peek() - _xMin.Peek());
+            double canvasAspect = Canvas.ClientSize.Height / (double)Canvas.ClientSize.Width;
+            if (wantAspect > canvasAspect)
             {
-                wid = (_yMax.Peek() - _yMin.Peek()) / Canvas_aspect;
+                wid = (_yMax.Peek() - _yMin.Peek()) / canvasAspect;
                 mid = (_xMin.Peek() + _xMax.Peek()) / 2;
                 _xMin.Push(mid - wid / 2);
                 _xMax.Push(mid + wid / 2);
             }
             else
             {
-                hgt = (_xMax.Peek() - _xMin.Peek()) * Canvas_aspect;
+                hgt = (_xMax.Peek() - _xMin.Peek()) * canvasAspect;
                 mid = (_yMin.Peek() + _yMax.Peek()) / 2;
                 _yMin.Push(mid - hgt / 2);
                 _yMax.Push(mid + hgt / 2);
@@ -71,22 +94,20 @@ namespace Fractals
             double imaginaryDiv = (_yMax.Peek() - _yMin.Peek()) / (hight - 1);
 
             double real = _xMin.Peek();
+            Complex z = 0;
             for (int X = 0; X < width; X++)
             {
                 double imaginary = _yMin.Peek();
                 for (int Y = 0; Y < hight; Y++)
                 {
-                    int iteration = _fractal.Calculate(real, imaginary);
+                    int iteration = _fractal.Calculate(real, imaginary, out z);
 
-                    if (iteration >= MaxIterations)
+                    Color color = Color.Black;
+                    if (iteration < MaxIterations)
                     {
-                        _bm.SetPixel(X, Y, Color.Black);
+                        color = Color.FromArgb(iteration % 255, iteration % 255, iteration % 255);
                     }
-                    else
-                    {
-                        Color color = Color.FromArgb(iteration % 255, iteration % 255, iteration % 255);
-                        _bm.SetPixel(X, Y, color);
-                    }
+                    _bm.SetPixel(X, Y, color);
 
                     imaginary += imaginaryDiv;
                 }
@@ -183,6 +204,8 @@ namespace Fractals
             }
 
             chosen.MaxIterations = MaxIterations;
+            _z0 = chosen.Z0;
+
             _fractal = chosen;
 
             mnuFullScale_Click(null, null);
@@ -208,7 +231,7 @@ namespace Fractals
         private void mnuScale_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem mnu = sender as ToolStripMenuItem;
-            ScaleMap((double) mnu.Tag);
+            ScaleMap((double)mnu.Tag);
         }
 
         private void mnuFullScale_Click(object sender, EventArgs e)
@@ -225,6 +248,15 @@ namespace Fractals
 
             this.Cursor = Cursors.Default;
             Canvas.Cursor = Cursors.Cross;
+        }
+
+        private void mnuSettings_Click(object sender, EventArgs e)
+        {
+            Settings settings = new Settings(this);
+            if (settings.ShowDialog() == DialogResult.OK)
+            {
+                DrawFractal();
+            }
         }
 
         private void Canvas_MouseDown(object sender, MouseEventArgs e)
