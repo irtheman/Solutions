@@ -29,7 +29,7 @@ namespace Fractals
 
             MaxIterations = 100;
 
-            _fractal = new Mandelbrot();
+            _fractal = new Mandelbrot1();
             _fractal.MaxIterations = MaxIterations;
 
             mnuFullScale_Click(null, null);
@@ -95,7 +95,7 @@ namespace Fractals
                 if (X % 10 == 0) Canvas.Refresh();
             }
 
-            Text = "Mandelbrot (" +
+            Text = "Fractals (" +
                 _xMin.Peek().ToString("0.000000") + ", " +
                 _yMin.Peek().ToString("0.000000") + ")-(" +
                 _xMax.Peek().ToString("0.000000") + ", " +
@@ -147,11 +147,23 @@ namespace Fractals
 
             switch (cbo.SelectedItem.ToString())
             {
-                case "Mandelbrot":
-                    chosen = new Mandelbrot();
+                case "Mandelbrot 1":
+                    chosen = new Mandelbrot1();
                     break;
-                case "Burning Ship":
-                    chosen = new BurningShip();
+                case "Mandelbrot 2":
+                    chosen = new Mandelbrot2();
+                    break;
+                case "Mandelbrot 3":
+                    chosen = new Mandelbrot3();
+                    break;
+                case "Burning Ship 1":
+                    chosen = new BurningShip1();
+                    break;
+                case "Burning Ship 2":
+                    chosen = new BurningShip2();
+                    break;
+                case "Burning Ship 3":
+                    chosen = new BurningShip3();
                     break;
                 case "Julia 1":
                     chosen = new Julia1();
@@ -166,7 +178,7 @@ namespace Fractals
                     chosen = new Julia4();
                     break;
                 default:
-                    chosen = new Mandelbrot();
+                    chosen = new Mandelbrot1();
                     break;
             }
 

@@ -2,16 +2,16 @@
 
 namespace Fractals.Algorithms
 {
-    public class Mandelbrot : Fractal
+    public class Mandelbrot3 : Fractal
     {
         private readonly Complex Z0;
 
-        public Mandelbrot()
+        public Mandelbrot3()
         {
-            MinX = -2.2;
-            MaxX = 1;
-            MinY = -1.2;
-            MaxY = 1.2;
+            MinX = 0.247407;
+            MaxX = 0.348148;
+            MinY = -0.041602;
+            MaxY = 0.041602;
 
             Z0 = new Complex(0, 0);
         }

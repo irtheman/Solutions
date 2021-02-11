@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace Fractals.Algorithms
 {
-    public class BurningShip : Fractal
+    public class BurningShip3 : Fractal
     {
         private readonly Complex Z0;
 
-        public BurningShip()
+        public BurningShip3()
         {
-            MinX = -2.5;
-            MaxX = 1.5;
-            MinY = -2;
-            MaxY = 1;
+            MinX = -1.866826;
+            MaxX = -1.853783;
+            MinY = -0.011683;
+            MaxY = 0.000665;
 
             Z0 = new Complex(0, 0);
         }

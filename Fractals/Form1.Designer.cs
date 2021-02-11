@@ -173,8 +173,12 @@ namespace Fractals
             // mnuFractal
             // 
             this.mnuFractal.Items.AddRange(new object[] {
-            "Mandelbrot",
-            "Burning Ship",
+            "Mandelbrot 1",
+            "Mandelbrot 2",
+            "Mandelbrot 3",
+            "Burning Ship 1",
+            "Burning Ship 2",
+            "Burning Ship 3",
             "Julia 1",
             "Julia 2",
             "Julia 3",
