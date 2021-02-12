@@ -20,13 +20,14 @@ namespace Fractals.Algorithms
         public int MaxIterations { get; set; }
         public Complex Z0 { get; set; }
 
-        public int Calculate(double real, double imaginary, out Complex Z)
+        public int Calculate(double real, double imaginary, out Complex Z, out Complex C)
         {
             Complex z = GenerateZ(real, imaginary);
             Complex c = GenerateC(real, imaginary);
 
             int iteration = Calculate(ref z, ref c);
             Z = z;
+            C = c;
 
             return iteration;
         }

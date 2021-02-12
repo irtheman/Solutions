@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Numerics;
 using System.Windows.Forms;
 using Fractals.Algorithms;
+using Fractals.FractalColors;
 
 namespace Fractals
 {
@@ -16,7 +17,7 @@ namespace Fractals
         private Complex _z0;
         private int _maxIterations;
         private int _startX, _startY, _endX, _endY;
-        private bool _drawingBox;
+        private bool _loading, _drawingBox;
 
         public Form1()
         {
@@ -27,13 +28,18 @@ namespace Fractals
             _yMin = new Stack<double>();
             _yMax = new Stack<double>();
 
-            mnuFractal.SelectedIndex = 0;
-
-            MaxIterations = 100;
-
             _fractal = new Mandelbrot1();
             _fractal.MaxIterations = MaxIterations;
             _z0 = _fractal.Z0;
+
+            DrawingColors = new YellowScale();
+
+            MaxIterations = 100;
+
+            _loading = true;
+            mnuFractal.SelectedIndex = 0;
+            mnuColorPick.SelectedIndex = 0;
+            _loading = false;
 
             mnuFullScale_Click(null, null);
         }
@@ -59,6 +65,8 @@ namespace Fractals
                 _fractal.Z0 = value;
             }
         }
+
+        public BaseColor DrawingColors { get; set; }
 
         private void DrawFractal()
         {
@@ -94,20 +102,14 @@ namespace Fractals
             double imaginaryDiv = (_yMax.Peek() - _yMin.Peek()) / (hight - 1);
 
             double real = _xMin.Peek();
-            Complex z = 0;
+            Complex z = 0, c = 0;
             for (int X = 0; X < width; X++)
             {
                 double imaginary = _yMin.Peek();
                 for (int Y = 0; Y < hight; Y++)
                 {
-                    int iteration = _fractal.Calculate(real, imaginary, out z);
-
-                    Color color = Color.Black;
-                    if (iteration < MaxIterations)
-                    {
-                        color = Color.FromArgb(iteration % 255, iteration % 255, iteration % 255);
-                    }
-                    _bm.SetPixel(X, Y, color);
+                    int iteration = _fractal.Calculate(real, imaginary, out z, out c);
+                    _bm.SetPixel(X, Y, DrawingColors.GetColor(MaxIterations, iteration, z, c));
 
                     imaginary += imaginaryDiv;
                 }
@@ -116,11 +118,7 @@ namespace Fractals
                 if (X % 10 == 0) Canvas.Refresh();
             }
 
-            Text = "Fractals (" +
-                _xMin.Peek().ToString("0.000000") + ", " +
-                _yMin.Peek().ToString("0.000000") + ")-(" +
-                _xMax.Peek().ToString("0.000000") + ", " +
-                _yMax.Peek().ToString("0.000000") + ")";
+            Text = $"Fractals ({_xMin.Peek():0.000000}, {_yMin.Peek():0.000000})-({_xMax.Peek():0.000000}, {_yMax.Peek():0.000000})";
         }
 
         private void ScaleMap(double scaleFactor)
@@ -208,7 +206,60 @@ namespace Fractals
 
             _fractal = chosen;
 
-            mnuFullScale_Click(null, null);
+            if (!_loading)
+            {
+                mnuFullScale_Click(null, null);
+            }
+        }
+
+        private void mnuColorPick_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BaseColor chosen = null;
+            ToolStripComboBox cbo = sender as ToolStripComboBox;
+
+            switch (cbo.SelectedItem.ToString())
+            {
+                case "Default":
+                    chosen = new DefaultScale();
+                    break;
+                case "Default (Smooth 1)":
+                    chosen = new DefaultSmooth1Scale();
+                    break;
+                case "Default (Smooth 2)":
+                    chosen = new DefaultSmooth2Scale();
+                    break;
+                case "Grey Scale":
+                    chosen = new GreyScale();
+                    break;
+                case "Red Scale":
+                    chosen = new RedScale();
+                    break;
+                case "Green Scale":
+                    chosen = new GreenScale();
+                    break;
+                case "Blue Scale":
+                    chosen = new BlueScale();
+                    break;
+                case "Yellow Scale":
+                    chosen = new YellowScale();
+                    break;
+                case "Cyan Scale":
+                    chosen = new CyanScale();
+                    break;
+                case "Purple Scale":
+                    chosen = new PurpleScale();
+                    break;
+                default:
+                    chosen = new GreyScale();
+                    break;
+            }
+
+            DrawingColors = chosen;
+
+            if (!_loading)
+            {
+                DrawFractal();
+            }
         }
 
         private void mnuUndo_Click(object sender, EventArgs e)
