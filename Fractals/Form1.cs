@@ -249,8 +249,11 @@ namespace Fractals
                 case "Purple Scale":
                     chosen = new PurpleScale();
                     break;
+                case "Green-White Scale":
+                    chosen = new GreenWhiteScale();
+                    break;
                 default:
-                    chosen = new GreyScale();
+                    chosen = new DefaultScale();
                     break;
             }
 

@@ -218,7 +218,8 @@ namespace Fractals
             "Blue Scale",
             "Yellow Scale",
             "Cyan Scale",
-            "Purple Scale"});
+            "Purple Scale",
+            "Green-White Scale"});
             this.mnuColorPick.Name = "mnuColorPick";
             this.mnuColorPick.Size = new System.Drawing.Size(121, 23);
             this.mnuColorPick.Text = "Colors";
