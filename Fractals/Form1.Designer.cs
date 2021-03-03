@@ -50,6 +50,7 @@ namespace Fractals
             this.mnuFractal = new System.Windows.Forms.ToolStripComboBox();
             this.mnuColorPick = new System.Windows.Forms.ToolStripComboBox();
             this.Canvas = new System.Windows.Forms.PictureBox();
+            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.mnuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Canvas)).BeginInit();
             this.SuspendLayout();
@@ -80,6 +81,7 @@ namespace Fractals
             this.mnuSaveAs.Name = "mnuSaveAs";
             this.mnuSaveAs.Size = new System.Drawing.Size(123, 22);
             this.mnuSaveAs.Text = "&Save As...";
+            this.mnuSaveAs.Click += new System.EventHandler(this.mnuSaveAs_Click);
             // 
             // mnuView
             // 
@@ -240,6 +242,11 @@ namespace Fractals
             this.Canvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseMove);
             this.Canvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseUp);
             // 
+            // saveFileDialog
+            // 
+            this.saveFileDialog.Filter = "Png Image|*.png|JPeg Image|*.jpg|Bitmap Image|*.bmp|Gif Image|*.gif";
+            this.saveFileDialog.Title = "Save Fractal Image";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -280,6 +287,7 @@ namespace Fractals
         private System.Windows.Forms.ToolStripSeparator mnuSep;
         private System.Windows.Forms.PictureBox Canvas;
         private System.Windows.Forms.ToolStripComboBox mnuColorPick;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog;
     }
 }
 

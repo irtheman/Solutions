@@ -277,6 +277,37 @@ namespace Fractals
             DrawFractal();
         }
 
+        private void mnuSaveAs_Click(object sender, EventArgs e)
+        {
+            saveFileDialog.ShowDialog();
+
+            if (saveFileDialog.FileName != "")
+            {
+                System.IO.FileStream fs = (System.IO.FileStream)saveFileDialog.OpenFile();
+
+                switch (saveFileDialog.FilterIndex)
+                {
+                    case 1:
+                        _bm.Save(fs, System.Drawing.Imaging.ImageFormat.Png);
+                        break;
+
+                    case 2:
+                        _bm.Save(fs, System.Drawing.Imaging.ImageFormat.Jpeg);
+                        break;
+
+                    case 3:
+                        _bm.Save(fs, System.Drawing.Imaging.ImageFormat.Bmp);
+                        break;
+
+                    case 4:
+                        _bm.Save(fs, System.Drawing.Imaging.ImageFormat.Gif);
+                        break;
+                }
+
+                fs.Close();
+            }
+        }
+
         private void mnuRefresh_Click(object sender, EventArgs e)
         {
             ScaleMap(1.0);
